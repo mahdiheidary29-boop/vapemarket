@@ -1,28 +1,191 @@
 <!doctype html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Vape Market | فروشگاه تخصصی</title><link rel="stylesheet" href="style.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vape Market | فروشگاه تخصصی</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
+
 <div class="age-overlay" id="ageGate">
-  <div class="age-box"><div class="logo-mark">VM</div><h2>ورود به Vape Market</h2>
-  <p>این فروشگاه مخصوص بزرگسالان است. لطفاً تأیید کنید که طبق قوانین محل زندگی‌تان به سن قانونی رسیده‌اید.</p>
-  <button class="btn primary" id="ageYes">بله، سن قانونی را دارم</button>
-  <button class="btn ghost" id="ageNo">خیر</button><small>تأیید سن در این نسخه نمایشی، جایگزین احراز سن قانونی نیست.</small></div>
+  <div class="age-box">
+    <div class="logo-mark">VM</div>
+    <h2>ورود به Vape Market</h2>
+    <p>این فروشگاه مخصوص بزرگسالان است. لطفاً تأیید کنید که به سن قانونی رسیده‌اید.</p>
+    <button class="btn primary" id="ageYes">بله، سن قانونی را دارم</button>
+    <button class="btn ghost" id="ageNo">خیر</button>
+  </div>
 </div>
-<header class="topbar"><a class="brand" href="#"><span class="logo-mark">VM</span><span>Vape <b>Market</b><small>انتخاب هوشمندانه</small></span></a>
-<nav><a href="#categories">دسته‌بندی‌ها</a><a href="#products">محصولات</a><a href="#about">درباره ما</a></nav>
-<div class="top-actions"><button class="icon-btn" id="adminOpen">مدیریت</button><button class="cart-btn" id="cartOpen">سبد خرید <span id="cartCount">0</span></button></div></header>
+
+<header class="topbar">
+  <a class="brand" href="#">
+    <span class="logo-mark">VM</span>
+    <span>Vape <b>Market</b><small>انتخاب هوشمندانه</small></span>
+  </a>
+  <nav>
+    <a href="#categories">دسته‌بندی‌ها</a>
+    <a href="#products">محصولات</a>
+    <a href="#about">درباره ما</a>
+  </nav>
+  <div class="top-actions">
+    <button class="icon-btn" id="authOpen">ورود / ثبت‌نام</button>
+    <button class="icon-btn" id="adminOpen">مدیریت</button>
+    <button class="cart-btn" id="cartOpen">سبد خرید <span id="cartCount">0</span></button>
+  </div>
+</header>
+
 <main>
-<section class="hero"><div class="hero-copy"><span class="eyebrow">VAPE MARKET • فروشگاه آنلاین</span><h1>تجربه‌ای تازه،<br><em>انتخابی مطمئن.</em></h1><p>محصولات و لوازم جانبی را مرتب و آسان بررسی کنید. مشخصات و قیمت‌ها را قبل از انتخاب ببینید.</p><a class="btn primary" href="#products">مشاهده محصولات <span>←</span></a><div class="trust-row"><span>✦ نمایش مشخصات شفاف</span><span>✦ پشتیبانی مشتریان</span></div></div>
-<div class="hero-art"><div class="orb orb1"></div><div class="orb orb2"></div><div class="device-card"><span class="device-label">VAPE MARKET</span><div class="device-illustration"><div class="device-top"></div><div class="device-body"><span></span></div></div><div class="device-caption">GEAR UP YOUR STYLE</div></div><div class="floating-tag">NEW<br><b>COLLECTION</b></div></div></section>
-<section class="benefits"><div><b>01</b><span><strong>انتخاب ساده</strong><small>دسته‌بندی‌های روشن و کاربردی</small></span></div><div><b>02</b><span><strong>اطلاعات شفاف</strong><small>قیمت و مشخصات هر محصول</small></span></div><div><b>03</b><span><strong>مدیریت آسان</strong><small>افزودن محصول از پنل مدیریت</small></span></div></section>
-<section class="section" id="categories"><div class="section-head"><div><span class="eyebrow">دسته‌بندی‌ها</span><h2>چی دنبالش هستی؟</h2></div><p>از دسته‌بندی موردنظر شروع کن.</p></div><div class="category-grid">
-<button class="category cat-a" data-filter="دستگاه ویپ"><span>01 / DEVICES</span><b>دستگاه ویپ</b><i>↙</i></button><button class="category cat-b" data-filter="پادسیستم"><span>02 / POD SYSTEM</span><b>پادسیستم</b><i>↙</i></button><button class="category cat-c" data-filter="لوازم جانبی"><span>03 / ACCESSORIES</span><b>لوازم جانبی</b><i>↙</i></button><button class="category cat-d" data-filter="کویل و کارتریج"><span>04 / PARTS</span><b>کویل و کارتریج</b><i>↙</i></button></div></section>
-<section class="section products-section" id="products"><div class="section-head"><div><span class="eyebrow">منتخب فروشگاه</span><h2>محصولات</h2></div><div class="filters"><button class="filter active" data-filter="همه">همه</button><button class="filter" data-filter="دستگاه ویپ">دستگاه ویپ</button><button class="filter" data-filter="پادسیستم">پادسیستم</button><button class="filter" data-filter="لوازم جانبی">لوازم جانبی</button></div></div><div class="product-grid" id="productGrid"></div></section>
-<section class="newsletter" id="about"><div><span class="eyebrow">VAPE MARKET</span><h2>خرید آگاهانه از انتخاب شروع می‌شود.</h2><p>مشخصات محصول را بررسی کنید و در صورت نیاز با پشتیبانی تماس بگیرید.</p></div><a class="btn dark" href="mailto:info@vapemarket.example">تماس با فروشگاه ↗</a></section>
-</main><footer><a class="brand" href="#"><span class="logo-mark">VM</span><span>Vape <b>Market</b><small>فروشگاه آنلاین</small></span></a><p>فروش فقط به افراد واجد شرایط سنی و مطابق قوانین محل فعالیت مجاز است.</p><small>© 2026 Vape Market — نسخه نمایشی</small></footer>
-<div class="drawer-backdrop" id="drawerBackdrop"></div><aside class="drawer" id="cartDrawer"><div class="drawer-head"><h3>سبد خرید</h3><button class="close" data-close>×</button></div><div id="cartItems"></div><div class="cart-bottom"><div class="total"><span>جمع کل</span><b id="cartTotal">۰ تومان</b></div><button class="btn primary full" id="checkout">ادامه سفارش</button><small>پرداخت آنلاین در این نسخه فعال نیست.</small></div></aside>
-<div class="modal-backdrop" id="adminModal"><section class="admin-panel"><div class="drawer-head"><div><span class="eyebrow">CONTROL CENTER</span><h2>پنل مدیریت فروشگاه</h2></div><button class="close" data-close>×</button></div><p class="admin-note">این پنل نمایشی است و اطلاعات را فقط در همین مرورگر ذخیره می‌کند. برای استفاده عمومی باید احراز هویت امن و پایگاه داده راه‌اندازی شود.</p><form id="productForm" class="admin-form"><label>نام محصول<input id="pName" required placeholder="مثلاً دستگاه مدل X"></label><label>دسته‌بندی<select id="pCategory"><option>دستگاه ویپ</option><option>پادسیستم</option><option>لوازم جانبی</option><option>کویل و کارتریج</option></select></label><label>قیمت (تومان)<input id="pPrice" type="number" min="0" required placeholder="مثلاً 1200000"></label><label>توضیح کوتاه<input id="pDesc" placeholder="مشخصات مختصر"></label><button class="btn primary" type="submit">افزودن محصول</button></form><h3>فهرست محصولات</h3><div id="adminProducts"></div><button class="btn ghost" id="resetDemo">بازگردانی محصولات نمونه</button></section></div>
-<div class="toast" id="toast"></div><script src="app.js"></script></body></html>
+<section class="hero">
+  <div class="hero-copy">
+    <span class="eyebrow">VAPE MARKET • فروشگاه آنلاین</span>
+    <h1>تجربه‌ای تازه،<br><em>انتخابی مطمئن.</em></h1>
+    <p>محصولات و لوازم جانبی را مرتب و آسان بررسی کنید.</p>
+    <a class="btn primary" href="#products">مشاهده محصولات ←</a>
+  </div>
+  <div class="hero-art">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="device-card">
+      <span class="device-label">VAPE MARKET</span>
+      <div class="device-illustration">
+        <div class="device-top"></div>
+        <div class="device-body"><span></span></div>
+      </div>
+      <div class="device-caption">GEAR UP YOUR STYLE</div>
+    </div>
+    <div class="floating-tag">NEW<br><b>COLLECTION</b></div>
+  </div>
+</section>
+
+<section class="section" id="categories">
+  <div class="section-head">
+    <div><span class="eyebrow">دسته‌بندی‌ها</span><h2>چی دنبالش هستی؟</h2></div>
+  </div>
+  <div class="category-grid">
+    <button class="category cat-a" data-filter="دستگاه ویپ"><b>دستگاه ویپ</b></button>
+    <button class="category cat-b" data-filter="پادسیستم"><b>پادسیستم</b></button>
+    <button class="category cat-c" data-filter="لوازم جانبی"><b>لوازم جانبی</b></button>
+    <button class="category cat-d" data-filter="کویل و کارتریج"><b>کویل و کارتریج</b></button>
+  </div>
+</section>
+
+<section class="section products-section" id="products">
+  <div class="section-head">
+    <div><span class="eyebrow">منتخب فروشگاه</span><h2>محصولات</h2></div>
+    <div class="filters">
+      <button class="filter active" data-filter="همه">همه</button>
+      <button class="filter" data-filter="دستگاه ویپ">دستگاه ویپ</button>
+      <button class="filter" data-filter="پادسیستم">پادسیستم</button>
+      <button class="filter" data-filter="لوازم جانبی">لوازم جانبی</button>
+    </div>
+  </div>
+  <div class="product-grid" id="productGrid"></div>
+</section>
+
+<section class="newsletter" id="about">
+  <div>
+    <span class="eyebrow">VAPE MARKET</span>
+    <h2>خرید آگاهانه از انتخاب شروع می‌شود.</h2>
+    <p>مشخصات محصول را بررسی کنید.</p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <a class="brand" href="#"><span class="logo-mark">VM</span><span>Vape <b>Market</b></span></a>
+  <p>فروش مطابق قوانین محل فعالیت مجاز است.</p>
+  <small>© 2026 Vape Market</small>
+</footer>
+
+<div class="drawer-backdrop" id="drawerBackdrop"></div>
+<aside class="drawer" id="cartDrawer">
+  <div class="drawer-head">
+    <h3>سبد خرید</h3>
+    <button class="close" data-close>×</button>
+  </div>
+  <div id="cartItems"></div>
+  <div class="cart-bottom">
+    <div class="total"><span>جمع کل</span><b id="cartTotal">۰ تومان</b></div>
+    <button class="btn primary full" id="checkout">ادامه سفارش</button>
+  </div>
+</aside>
+
+<div class="modal-backdrop" id="adminModal">
+  <section class="admin-panel">
+    <div class="drawer-head">
+      <h2>پنل مدیریت فروشگاه</h2>
+      <button class="close" data-close>×</button>
+    </div>
+    <form id="productForm" class="admin-form">
+      <label>نام محصول<input id="pName" required></label>
+      <label>دسته‌بندی
+        <select id="pCategory">
+          <option>دستگاه ویپ</option>
+          <option>پادسیستم</option>
+          <option>لوازم جانبی</option>
+          <option>کویل و کارتریج</option>
+        </select>
+      </label>
+      <label>قیمت (تومان)<input id="pPrice" type="number" min="0" required></label>
+      <label>توضیح کوتاه<input id="pDesc"></label>
+      <button class="btn primary" type="submit">افزودن محصول</button>
+    </form>
+    <h3>فهرست محصولات</h3>
+    <div id="adminProducts"></div>
+    <button class="btn ghost" id="resetDemo">بازگردانی محصولات نمونه</button>
+  </section>
+</div>
+
+<div class="modal-backdrop" id="authModal" aria-hidden="true">
+  <section class="auth-panel" role="dialog" aria-modal="true">
+    <div class="drawer-head">
+      <div>
+        <span class="eyebrow">VAPE MARKET ACCOUNT</span>
+        <h2 id="authTitle">ورود به حساب</h2>
+      </div>
+      <button class="close" type="button" data-auth-close>×</button>
+    </div>
+
+    <p class="auth-help">با شماره تلفن و رمز عبور وارد شوید یا حساب جدید بسازید. شماره را با کد کشور وارد کنید؛ مثلاً ‎+994…</p>
+
+    <div class="auth-tabs">
+      <button type="button" id="authLoginTab" class="auth-tab active">ورود</button>
+      <button type="button" id="authSignupTab" class="auth-tab">ثبت‌نام</button>
+    </div>
+
+    <form id="authForm" class="auth-form">
+      <label>شماره تلفن
+        <input id="authPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+994501234567" required>
+      </label>
+      <label>رمز عبور
+        <input id="authPassword" type="password" autocomplete="current-password" minlength="6" placeholder="حداقل ۶ کاراکتر" required>
+      </label>
+      <button class="btn primary full" id="authSubmit" type="submit">ورود</button>
+    </form>
+
+    <form id="otpForm" class="auth-form" hidden>
+      <p>کد پیامکی ارسال‌شده را وارد کنید.</p>
+      <label>کد تأیید پیامک
+        <input id="authOtp" inputmode="numeric" autocomplete="one-time-code" required placeholder="کد پیامک">
+      </label>
+      <button class="btn primary full" type="submit">تأیید شماره</button>
+    </form>
+
+    <div id="authStatus" class="auth-status" role="status" aria-live="polite"></div>
+
+    <div id="authSignedIn" class="auth-signed-in" hidden>
+      <p id="authUserLabel"></p>
+      <button class="btn ghost full" type="button" id="authSignOut">خروج از حساب</button>
+    </div>
+
+    <small class="auth-footnote">برای تأیید پیامکی، تنظیمات Phone Auth و سرویس SMS در Supabase باید تکمیل شوند.</small>
+  </section>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="app.js"></script>
+</body>
+</html>
