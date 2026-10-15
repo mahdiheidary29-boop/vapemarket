@@ -1,6 +1,5 @@
-const $ = s => document.querySelector(s);
-const $$ = s => document.querySelectorAll(s);
-
+const SUPABASE_URL = "https://fgpxwxrlkowauouwmhqc.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_SzsHEG24RmsWFWJXZyMICA_LmY-HcNE";
 const seed = [
   {
     id: 1,
