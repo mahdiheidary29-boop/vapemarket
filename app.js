@@ -8,10 +8,24 @@ function readStoredJSON(storage, key, fallback) {
   try { const raw = storage.getItem(key); return raw ? JSON.parse(raw) : fallback; }
   catch (error) { console.warn("ذخیره محلی قابل خواندن نیست:", key, error); return fallback; }
 }
-let products=readStoredJSON(localStorage, "vm_products", null) || seed;
+let products=[];
 let cart=readStoredJSON(sessionStorage, "vm_cart", []), activeFilter="همه";
 const money=n=>Number(n).toLocaleString("fa-IR")+" تومان";
-function save(){localStorage.setItem("vm_products",JSON.stringify(products))}
+function dbRowToProduct(row){return {id:Number(row.id),name:row.name,category:row.category,price:Number(row.price),desc:row.description||"",bg:row.bg||"#e4ddff"}}
+async function loadProducts(showError=false){
+  if(!sb){products=[];renderProducts();return;}
+  try{
+    const {data,error}=await sb.from("vm_products").select("id,name,category,price,description,bg").order("id",{ascending:false});
+    if(error)throw error;
+    products=(data||[]).map(dbRowToProduct);
+    renderProducts();
+    if($("#adminModal").classList.contains("show"))renderAdmin();
+  }catch(error){
+    console.error("بارگذاری محصولات از پایگاه داده ناموفق بود:",error);
+    products=[];renderProducts();
+    if(showError)toast("بارگذاری محصولات از Supabase ناموفق بود؛ تنظیمات جدول و RLS را بررسی کن.");
+  }
+}
 function renderProducts(){const list=products.filter(p=>activeFilter==="همه"||p.category===activeFilter);$("#productGrid").innerHTML=list.length?list.map(p=>`<article class="product"><div class="product-art" style="background:${p.bg||'#e4ddff'}"><div class="mini-device"></div></div><h3>${esc(p.name)}</h3><p>${esc(p.desc||"برای اطلاع از جزئیات بیشتر، مشخصات محصول را بررسی کنید.")}</p><div class="product-foot"><span class="price">${money(p.price)}</span><button class="add-btn" data-add="${p.id}">افزودن +</button></div></article>`).join(""):`<div class="empty">محصولی در این دسته وجود ندارد.</div>`}
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function renderCart(){let count=cart.reduce((n,x)=>n+x.qty,0);$("#cartCount").textContent=count.toLocaleString("fa-IR");$("#cartItems").innerHTML=cart.length?cart.map(x=>`<div class="cart-line"><span>${esc(x.name)}<br><small>${x.qty.toLocaleString("fa-IR")} × ${money(x.price)}</small></span><span><b>${money(x.price*x.qty)}</b><br><button data-remove="${x.id}">حذف</button></span></div>`).join(""):`<div class="empty" style="margin-top:25px">سبد خرید خالی است.</div>`;$("#cartTotal").textContent=money(cart.reduce((n,x)=>n+x.price*x.qty,0));sessionStorage.setItem("vm_cart",JSON.stringify(cart))}
@@ -63,11 +77,13 @@ $("#checkout").onclick=()=>toast("برای پرداخت واقعی، درگاه 
 $("#productForm").onsubmit=async e=>{
   e.preventDefault();
   if (!(await confirmAdminAction())) return;
-  products.unshift({id:Date.now(),name:$("#pName").value.trim(),category:$("#pCategory").value,price:Number($("#pPrice").value),desc:$("#pDesc").value.trim(),bg:["#e4ddff","#ffd9eb","#d8f6f2","#e9f7bd"][products.length%4]});
-  save();renderProducts();renderAdmin();e.target.reset();toast("محصول در همین مرورگر ذخیره شد")
+  const newProduct={name:$("#pName").value.trim(),category:$("#pCategory").value,price:Number($("#pPrice").value),description:$("#pDesc").value.trim(),bg:["#e4ddff","#ffd9eb","#d8f6f2","#e9f7bd"][products.length%4]};
+  const {error}=await sb.from("vm_products").insert(newProduct);
+  if(error){console.error(error);toast("ذخیره محصول ناموفق بود؛ مجوز مدیر در Supabase را بررسی کن.");return;}
+  await loadProducts(true);renderAdmin();e.target.reset();toast("محصول با موفقیت در پایگاه داده ذخیره شد")
 };
-$("#adminProducts").addEventListener("click",async e=>{let b=e.target.closest("[data-delete]");if(!b)return;if (!(await confirmAdminAction())) return;products=products.filter(p=>p.id!==Number(b.dataset.delete));save();renderProducts();renderAdmin()});
-$("#resetDemo").onclick=async()=>{if (!(await confirmAdminAction())) return;products=seed.map(x=>({...x}));save();renderProducts();renderAdmin();toast("محصولات نمونه بازگردانی شدند")};
+$("#adminProducts").addEventListener("click",async e=>{let b=e.target.closest("[data-delete]");if(!b)return;if (!(await confirmAdminAction())) return;const {error}=await sb.from("vm_products").delete().eq("id",Number(b.dataset.delete));if(error){console.error(error);toast("حذف محصول ناموفق بود.");return;}await loadProducts(true);renderAdmin();toast("محصول حذف شد")});
+$("#resetDemo").onclick=async()=>{if (!(await confirmAdminAction())) return;const {error:deleteError}=await sb.from("vm_products").delete().gt("id",0);if(deleteError){console.error(deleteError);toast("بازگردانی محصولات ناموفق بود.");return;}const rows=seed.map(x=>({name:x.name,category:x.category,price:x.price,description:x.desc,bg:x.bg}));const {error:insertError}=await sb.from("vm_products").insert(rows);if(insertError){console.error(insertError);toast("حذف انجام شد اما درج نمونه‌ها ناموفق بود.");return;}await loadProducts(true);renderAdmin();toast("محصولات نمونه در پایگاه داده بازگردانی شدند")};
 // Supabase authentication: phone number + password, without SMS.
 // IMPORTANT: Set these to your Supabase project's Project URL and Publishable key.
 const SUPABASE_URL = "https://fgpxwxrlkowauouwmhqc.supabase.co";
@@ -215,7 +231,7 @@ $("#authForm").addEventListener("submit", async event => {
       result = await sb.auth.signUp({
         email,
         password,
-        options: { data: { phone_number: phone } }
+        options: { data: { phone_number: identifier } }
       });
     } else {
       result = await sb.auth.signInWithPassword({ email, password });
@@ -250,5 +266,5 @@ $("#authSignOut").addEventListener("click", async () => {
 
 if (sb) sb.auth.onAuthStateChange(() => { refreshAuthUI(); });
 
-renderProducts();
+loadProducts(true);
 renderCart();
