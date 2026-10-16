@@ -119,11 +119,11 @@ function normalizePhone(value) {
   return String(value || "").replace(/[\s()-]/g, "");
 }
 
-// Supabase email/password auth is used behind the scenes because Supabase's
-// native phone/password provider requires phone verification/SMS configuration.
-// The customer still enters only their phone number and password.
+// Customer phone numbers are mapped to a syntactically valid internal email.
+// This no-SMS workaround requires Supabase email confirmation to be disabled.
+// It does NOT verify that the customer owns the phone number.
 function phoneToInternalEmail(phone) {
-  return "phone-" + phone.replace(/\D/g, "") + "@users.vapemarket.invalid";
+  return "phone-" + phone.replace(/\D/g, "") + "@users.vapemarket.com";
 }
 
 function openAuth() {
