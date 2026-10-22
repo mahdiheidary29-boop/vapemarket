@@ -268,3 +268,30 @@ if (sb) sb.auth.onAuthStateChange(() => { refreshAuthUI(); });
 
 loadProducts(true);
 renderCart();
+async function createCheckoutOrder(cartItems) {
+  const items = cartItems.map(item => ({
+    product_id: String(item.id),
+    quantity: Number(item.quantity)
+  }));
+
+  const { data, error } = await supabase.functions.invoke(
+    "create-order",
+    { body: { items } }
+  );
+
+  if (error) {
+    throw new Error("ثبت سفارش ناموفق بود. دوباره تلاش کنید.");
+  }
+
+  if (!data?.order_id || data.status !== "pending") {
+    throw new Error("پاسخ سفارش معتبر نیست.");
+  }
+
+  alert(
+    `سفارش ثبت شد: ${data.order_id}\n` +
+    `مبلغ: ${Number(data.amount_toman).toLocaleString("fa-IR")} تومان\n` +
+    "این سفارش هنوز پرداخت نشده است."
+  );
+
+  return data;
+}
