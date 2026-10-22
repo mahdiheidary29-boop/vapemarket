@@ -73,7 +73,66 @@ $$("[data-filter]").forEach(b=>b.addEventListener("click",()=>{activeFilter=b.da
 $("#productGrid").addEventListener("click",e=>{let b=e.target.closest("[data-add]");if(!b)return;let p=products.find(x=>x.id===Number(b.dataset.add));if(!p)return;let line=cart.find(x=>x.id===p.id);line?line.qty++:cart.push({...p,qty:1});renderCart();toast("به سبد خرید اضافه شد")});
 $("#cartOpen").onclick=()=>{renderCart();openDrawer()};$("#adminOpen").onclick=openAdmin;$("#drawerBackdrop").onclick=closeAll;$$("[data-close]").forEach(b=>b.onclick=closeAll);
 $("#cartItems").addEventListener("click",e=>{let b=e.target.closest("[data-remove]");if(!b)return;cart=cart.filter(x=>x.id!==Number(b.dataset.remove));renderCart()});
-$("#checkout").onclick=()=>toast("برای پرداخت واقعی، درگاه پرداخت و بک‌اند امن باید راه‌اندازی شود.");
+
+async function createCheckoutOrder(cartItems) {
+  const items = cartItems.map(item => ({
+    product_id: String(item.id),
+    quantity: Number(item.qty)
+  }));
+
+  const { data, error } = await sb.functions.invoke(
+    "create-order",
+    { body: { items } }
+  );
+
+  if (error) {
+    console.error(error);
+    throw new Error("ثبت سفارش ناموفق بود. دوباره تلاش کنید.");
+  }
+
+  if (!data?.order_id || data.status !== "pending") {
+    throw new Error("پاسخ سفارش معتبر نیست.");
+  }
+
+  return data;
+}
+
+$("#checkout").onclick = async () => {
+  if (!sb) {
+    toast("اتصال به Supabase برقرار نیست.");
+    return;
+  }
+
+  if (!cart.length) {
+    toast("سبد خرید خالی است.");
+    return;
+  }
+
+  const { data } = await sb.auth.getSession();
+
+  if (!data.session) {
+    toast("برای ثبت سفارش ابتدا وارد حساب کاربری شوید.");
+    openAuth();
+    return;
+  }
+
+  const button = $("#checkout");
+  button.disabled = true;
+
+  try {
+    const order = await createCheckoutOrder(cart);
+
+    toast(
+      `سفارش ثبت شد؛ مبلغ ${Number(order.amount_toman).toLocaleString("fa-IR")} تومان`
+    );
+  } catch (error) {
+    console.error(error);
+    toast(error.message || "ثبت سفارش ناموفق بود.");
+  } finally {
+    button.disabled = false;
+  }
+};
+
 $("#productForm").onsubmit=async e=>{
   e.preventDefault();
   if (!(await confirmAdminAction())) return;
