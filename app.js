@@ -80,8 +80,8 @@ function openProductDetails(productId) {
         <p class="product-detail-description">${esc(p.description || "توضیحی برای این محصول ثبت نشده است.")}</p>
         <div class="product-detail-stock ${out ? "out" : ""}">${out ? "اتمام موجودی" : "موجود در انبار"}</div>
         ${pv.length ? `<label class="detail-variant-label">انتخاب ${pv[0].variant_type === "flavor" ? "طعم" : pv[0].variant_type === "color" ? "رنگ" : "مدل"}
-          <select id="detailVariantSelect"><option value="">یک گزینه انتخاب کنید</option>${pv.map(v=>`<option value="${esc(v.id)}" ${Number(v.stock)<=0?"disabled":""}>${esc(v.label)}${Number(v.stock)<=0?" — ناموجود":` — موجودی ${Number(v.stock).toLocaleString("fa-IR")}`}</option>`).join("")}</select>
-        </label>` : `<div class="product-detail-stock-count">موجودی: ${Number(p.stock).toLocaleString("fa-IR")} عدد</div>`}
+          <select id="detailVariantSelect"><option value="">یک گزینه انتخاب کنید</option>${pv.map(v=>`<option value="${esc(v.id)}" ${Number(v.stock)<=0?"disabled":""}>${esc(v.label)}${Number(v.stock)<=0?" — ناموجود":""}</option>`).join("")}</select>
+        </label>` : ""}
         <div class="product-detail-actions">
           <label class="detail-quantity-label">تعداد<input id="detailQuantity" type="number" min="1" value="1" step="1"></label>
           <button class="btn btn-primary" type="button" id="detailAddToCart" ${out ? "disabled" : ""}>افزودن به سبد خرید</button>
